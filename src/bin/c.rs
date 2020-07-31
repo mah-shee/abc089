@@ -5,23 +5,33 @@ use proconio::{fastout, input};
 fn main() {
     input! {
         n: usize,
-        t: [(usize, usize, usize); n],
-
+        s: [Chars; n]
     }
-    // |xi - xi+1| + |yi - yi+1|がt2-t1より大きく、かつ偶奇が一致していればいい
-    let mut ans = true;
-    for i in 0..(n - 1) {
-        let distance = (t[i + 1].1 as isize - t[i].1 as isize).abs()
-            + (t[i + 1].2 as isize - t[i].2 as isize).abs();
-        if distance as usize <= t[i + 1].0 - t[i].0
-            && distance as usize % 2 == (t[i + 1].0 - t[i].0) % 2
-        {
-            println!("No");
-            ans = false;
-            break;
+    let (mut m, mut a, mut r, mut c, mut h) = (0, 0, 0, 0, 0);
+    for i in 0..n {
+        if s[i][0] == 'M' {
+            m += 1
+        }
+        if s[i][0] == 'A' {
+            a += 1
+        }
+        if s[i][0] == 'R' {
+            r += 1;
+        }
+        if s[i][0] == 'C' {
+            c += 1;
+        }
+        if s[i][0] == 'H' {
+            h += 1;
         }
     }
-    if ans {
-        println!("Yes");
+    let d = vec![m, a, r, c, h];
+    let p = [0, 0, 0, 0, 0, 0, 1, 1, 1, 2];
+    let q = [1, 1, 1, 2, 2, 3, 2, 2, 3, 3];
+    let t = [2, 3, 4, 3, 4, 4, 3, 4, 4, 4];
+    let mut ans: u128 = 0;
+    for i in 0..10 {
+        ans += d[p[i]] * d[q[i]] * d[t[i]];
     }
+    println!("{}", ans);
 }
